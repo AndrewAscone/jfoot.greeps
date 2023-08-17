@@ -21,15 +21,21 @@ public class Greep extends Creature {
         setImage(getCurrentImage());
     }
 
+    //Determines how Greep will act
     @Override
     protected void behave() {
+        //If Greep has a tomato
         if (isCarryingTomato()) {
+            //If the Greep is at the ship
             if (isAtShip()) {
+                //Drop tomato in ship, adding it to ship storage
                 dropTomato();
-            } else {
+            } else { //If Greep has a tomato but *isn't* at the ship yet
+                //Greep will use turnTowardsHome method to face towards the ship
                 turnTowardsHome();
             }
         }
+        //If Greep doesn't have a tomato, keep moving
         move();
     }
 
@@ -55,19 +61,27 @@ public class Greep extends Creature {
         return false;
     }
 
+    //Checks if a Greep is waiting for help with taking a tomato
     public Boolean isWaitingForAssistance() {
+        //Boolean check if Greep is at a tomato pile AND is not carrying one already
         return isAtTomatoes() && !isCarryingTomato();
     }
 
 
+    //Check if a Greep is waiting to help load a tomato onto another Greep
     public Boolean isWaitingToAssist() {
+        //If Greep is at a tomato pile
         if (isAtTomatoes()) {
+            //For each Greep surrounding the tomato pile
             for (Greep greep : getSurroundingTomatoPile().getIntersectingObjects(Greep.class)) {
+                //If a Greep *isn't* carrying a tomato
                 if (!greep.isCarryingTomato()) {
+                    //Then isWaitingToAssist is true
                     return true;
                 }
             }
         }
+        //If Greep is not at a tomato pile, isWaitingToAssist is false
         return false;
     }
 
@@ -79,7 +93,9 @@ public class Greep extends Creature {
     }
 
 
+    //Check if Greep is returning to ship
     public Boolean isReturningToShip() {
+        //Check if Greep is carrying a tomato to determine outcome
         return isCarryingTomato();
     }
 
@@ -90,7 +106,10 @@ public class Greep extends Creature {
     }
 
 
+    //Determine if Greep should be looking for tomatoes
     public Boolean shouldSeekTomatoPile() {
+        //If Greep *is* carrying a tomato, it should not seek more tomatoes
+        //If Greep *isn't* carraying a tomato, it should look for a tomato pile
         return !isCarryingTomato();
     }
 
